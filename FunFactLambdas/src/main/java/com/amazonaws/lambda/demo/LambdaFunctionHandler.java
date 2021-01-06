@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Address;
@@ -25,7 +26,14 @@ import org.json.JSONObject;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.events.ScheduledEvent;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.*;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
 
 public class LambdaFunctionHandler {
 	LambdaLogger logger;
@@ -33,8 +41,6 @@ public class LambdaFunctionHandler {
 	public void handleRequest(ScheduledEvent event, Context context) {
 		logger = context.getLogger();
 		// TODO: Fetch Emails from Dynamo and throw them into a list
-		
-		
 		
 		
 		// Fetching Properties file
@@ -49,7 +55,7 @@ public class LambdaFunctionHandler {
 			logger.log("Failed to pull from config.properties");
 			System.exit(1);
 		}
-		
+		logger.log("Loading Properties");
 		// loading in properties
 		try {
 			String user = prop.getProperty("user");
@@ -66,15 +72,41 @@ public class LambdaFunctionHandler {
 				System.exit(1);
 			}
 			
+			BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKeyId, secretAccessKey);
+			AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+					.withRegion("us-east-1")
+					.withCredentials(new AWSStaticCredentialsProvider(awsCreds))
+					.build();
+
+			ScanRequest scanRequest = new ScanRequest()
+			    .withTableName("fun_fact");
+			List<String> addressList = new ArrayList<String>();
+			ScanResult result = client.scan(scanRequest);
+			for (Map<String, AttributeValue> item : result.getItems()){
+			    addressList.add(item.get("email").toString());
+			}
+			
+			//Now convert to address array
+			Address[] addressArray = new Address[addressList.size()];
+			for(int i = 0; i < addressList.size(); ++i) {
+				try {
+					addressArray[i] = new InternetAddress(addressList.get(i));
+				} catch (Exception ex) {
+					logger.log("Invalid Email");
+					logger.log("EXCEPTION:" + ex);
+					logger.log("REASON: " + ex.getMessage());
+					System.exit(1);
+				}
+			}
+			
 			String funFact = fetchFact();
 			
 			// need to build the props
-			Address[] addresses = null;
 			Session session = Session.getDefaultInstance(prop);
 			MimeMessage msg = new MimeMessage(session);
 			try {
 				msg.setFrom(new InternetAddress(user));
-				msg.setRecipients(Message.RecipientType.BCC, addresses);
+				msg.setRecipients(Message.RecipientType.BCC, addressArray);
 				msg.setSubject(subject);
 				msg.setSentDate(new Date());
 				msg.setText(funFact);
