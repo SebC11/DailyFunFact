@@ -1,7 +1,7 @@
 # DailyFunFact
 
 Serverless Web App which allows users to subscribe to daily fun fact emails.  
-### [Link to Site](https://main.d2rwu1vabov5ga.amplifyapp.com/?) ###  
+### [www.dailyfunfact.net](https://www.dailyfunfact.net/) ###  
 ![plot](./images/websiteSC.png)
 
 ## Lambda ##
