@@ -32,13 +32,15 @@ $(document).ready(function() {
         //Create item in Dynamo
         let emailVal = $('#email').val();
         let params = {
-            email: emailVal
+            TableName: 'fun_fact',
+            Key: { 'email': emailVal }
         };
         docClient.delete(params, function(err, data) {
             if (err) {
                 alert("Failed to unsubscribe your email");
+                console.log(err);
             } else {
-                alert("Successfully unsubscribed from daily fun fact emails. :(")
+                alert("Successfully unsubscribed from daily fun fact emails. We will miss you!")
             }
         });
     });
