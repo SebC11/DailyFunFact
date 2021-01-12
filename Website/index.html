@@ -6,15 +6,60 @@
     <meta charset="utf-8">
 
     <title>Daily Fun Facts</title>
-    <meta name="description" content="The HTML5 Herald">
-    <meta name="author" content="SitePoint">
-
-    <link rel="stylesheet" href="css/styles.css?v=1.0">
-
+    <link rel="shortcut icon" href="favicon.ico" />
+    <meta name="description" content="Daily Fun Facts">
+    <meta name="author" content="Sebastien Christensen">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/mdb.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <script src="https://kit.fontawesome.com/e9354ca1c4.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <script src="js/scripts.js"></script>
+    <div class="d-flex align-items-center justify-content-center" style="height: 100%;">
+        <div class="container-small bg-light">
+            <h1 style="font-family: 'Sacramento', cursive; text-align: center;">Daily Fun Facts</h1>
+            <p style="text-align: center;">Input your email address below to subscribe or unsubscribe to Daily Fun Fact emails. We hope you enjoy!</p>
+            <form id="email-form" style="padding-top: 20px;">
+                <div class="form-outline mb-4">
+                    <input type="email" id="email" class="form-control" />
+                    <label class="form-label" for="form1">Email address</label>
+                </div>
+                <div class="row mb-4">
+                    <div class="col d-flex justify-content-center">
+                        <button id="unsubscribe" class="btn btn-primary btn-block btn-raised">Unsubscribe</button>
+
+                    </div>
+                    <div class="col">
+                        <button id="subscribe" class="btn btn-primary btn-block btn-raised">Subscribe</button>
+                    </div>
+                </div>
+            </form>
+            <div class="row mb-1">
+                <div class="col d-flex justify-content-center">
+                    <h5>By Sebastien Christensen</h5>
+                </div>
+            </div>
+            <div class="row mb-1">
+                <div class="col d-flex justify-content-center">
+                    <a href="https://github.com/SebC11">
+                        <i class="fab fa-github fa-2x"></i>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="static/js/script.js"></script>
+    <script src="static/js/bootstrap.js"></script>
+    <script src="static/js/mdb.min.js"></script>
 </body>
 
 </html>
