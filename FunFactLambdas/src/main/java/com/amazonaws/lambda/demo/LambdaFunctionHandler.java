@@ -79,7 +79,10 @@ public class LambdaFunctionHandler {
 			//Have to convert the map to extract the emails from the objects
 			for (Map<String, AttributeValue> item : result.getItems()){
 				String str = item.get("email").toString();
-			    addressList.add(str.substring(4,str.length()-2));
+				if(str.contains("@") && str.contains(".")) {
+					addressList.add(str.substring(4,str.length()-2));
+				}
+			    
 			}
 			
 			//Now convert to address array
