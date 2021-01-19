@@ -14,7 +14,7 @@ Sample email:
 
 ## DynamoDB ##
 
-This project uses a fairly simple table within DynamoDB called fun_fact. It is used to store all the subscribers to the emails and is conveniently pulled through a DynamoDB Scan request in the lambda function. The primary key is the emails.
+This project uses a fairly simple table within DynamoDB called fun_fact. It is used to store all the subscribers to the emails and is conveniently pulled through a DynamoDB Scan request in the lambda function. The primary key is the emails. A cognito identity pool is used to access the information. This role only has read and write permissions as to make sure the table is secure.
 
 ## Website ##
 
